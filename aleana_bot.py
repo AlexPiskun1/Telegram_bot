@@ -1,4 +1,4 @@
-# aleana_dostavka_bot
+# aleana_dostavka_bot  Бот оформляет доставку товара
 import telebot
 from telebot import types
 
