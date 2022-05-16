@@ -106,7 +106,11 @@ def server_2(text,message):
             f"SELECT data.id_client, data.day, data.car, data.time, data.text, data.id_foto, dostavka.tel, dostavka.adress   "
             f"FROM dostavka INNER JOIN data ON dostavka.id_client = data.id_client WHERE car = '{text}'"):
         bot.send_message(message.chat.id, f"№ ID клиента - {i[0]},\nДата - {i[1]},\nМашина - {i[2]},\nВремя - {i[3]},"
-                                          f"\nЗвонок  - {i[4]},\nФото заказа - {i[5]},\nТелефон - {i[6]},\nАдрес - {i[7]} ")
+                                          f"\nЗвонок  - {i[4]},\nТелефон - {i[6]},\nАдрес - {i[7]} ")
+        if i[5]:
+            bot.send_photo(message.chat.id, i[5])
+        else:
+            pass
 
 
 @bot.message_handler(commands=['start'])
@@ -187,7 +191,11 @@ def send_text(message):
 
 
                 bot.send_message(message.chat.id,f"№ ID клиента - {i[0]},\nДата - {i[1]},\nМашина - {i[2]},\nВремя - {i[3]},"
-                                                 f"\nЗвонок  - {i[4]},\nФото заказа - {i[5]},\nТелефон - {i[6]},\nАдрес - {i[7]} ")
+                                                 f"\nЗвонок  - {i[4]},\nТелефон - {i[6]},\nАдрес - {i[7]} ")
+                if i[5]:
+                    bot.send_photo(message.chat.id, i[5] )
+                else:
+                    pass
 
 
         elif text == "заказы по машинам":
@@ -389,6 +397,25 @@ def callback_InLine(call):
 
         elif text == "ok":
             bot.edit_message_text("Спасибо за Ваш заказ, мы обязательно свяжемся с Вами.", call.message.chat.id, call.message.message_id, reply_markup=None)
+            bot.send_message(477068883, f"Есть заказ")
+            db = sqlite3.connect("aleana_server.db")
+            sql = db.cursor()
+            a = call.message.chat.id
+
+
+            for i in sql.execute(
+                    f"SELECT data.id_client, data.day, data.car, data.time, data.text, data.id_foto, dostavka.tel, dostavka.adress   "
+                    f"FROM dostavka INNER JOIN data ON dostavka.id_client = data.id_client WHERE data.id_client = '{a}'"):
+
+                bot.send_message(477068883,
+                                 f"№ ID клиента - {i[0]},\nДата - {i[1]},\nМашина - {i[2]},\nВремя - {i[3]},"
+                                 f"\nЗвонок  - {i[4]},\nТелефон - {i[6]},\nАдрес - {i[7]} ")
+                if i[5]:
+                    bot.send_photo(477068883, i[5])
+                else:
+                    pass
+
+
 
 
         elif text == "no_ok":
