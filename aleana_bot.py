@@ -39,11 +39,12 @@ def kb_0(message, text = " Продолжайте работу "):
 
 def kb_inline_1(message, text = "Выбираем машину"):
     kb = types.InlineKeyboardMarkup(row_width=1)
-    button1 = types.InlineKeyboardButton("Машина до 1т, до 4 м3", callback_data="1")
-    button2 = types.InlineKeyboardButton("Машина до 3.5т, до 18м3", callback_data="2")
-    button3 = types.InlineKeyboardButton("Манипулятор до 10т, 8 под", callback_data="3")
+    button1 = types.InlineKeyboardButton("Машина до 2т, до 12 м3", callback_data="1")
+    button2 = types.InlineKeyboardButton("Манипулятор до 10т, 8 под", callback_data="2")
+    #button2 = types.InlineKeyboardButton("Машина до 3.5т, до 18м3", callback_data="2")
 
-    kb.add(button1,button2,button3)
+
+    kb.add(button1,button2)
     bot.send_message(message.chat.id, text, reply_markup=kb)
 
 def kb_inline_time(message, text = "Выберите время доставки"):
@@ -87,10 +88,10 @@ def kb_admin(message, text = "Сделайте Ваш выбор"):
 
 def kb_admin_avto(message, text = "Сделайте Ваш выбор"):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button1 = types.KeyboardButton("Форд")
-    button2 = types.KeyboardButton("Мерседес")
-    button3 = types.KeyboardButton("Скания")
-    kb.add(button1,button2,button3)
+    button1 = types.KeyboardButton("Фиат")
+    button2 = types.KeyboardButton("Скания")
+    #button3 = types.KeyboardButton("Скания")
+    kb.add(button1,button2)
     bot.send_message(message.chat.id,text,reply_markup=kb)
 
 def server_1(text,call):
@@ -158,7 +159,7 @@ def send_text(message):
         elif text == 'admin':
             bot.send_message(message.chat.id, f"Добрый день,{message.from_user.first_name}, Вы вошли, как администратор")
         elif text == "контакты":
-            bot.send_message(message.chat.id, f"A1 - +375(44)760-88-90\nМТС - +375(33)380-88-90\nгород - 8(01716)9-05-05\nсайт - aleana.by\ne-mail - weldbi@mail.ru")
+            bot.send_message(message.chat.id, f"A1 - +375(44)760-88-90\nМТС - +375(33)380-88-90\nгород - 8(01716)9-05-05\nсайт - http://aleana.by/\ne-mail - weldbi@mail.ru")
 
         elif text == "режим работы":
             bot.send_message(message.chat.id, f"ПН-СБ - 8.00-20.00\nВС - 9.00-18.00\nБез обеда")
@@ -166,7 +167,7 @@ def send_text(message):
 
 
         elif text == "локация":
-            bot.send_message(message.chat.id, f"г.Фаниполь, ул.Мира, 1А\nМагазин Алеана\nкоординаты 53.75278, 27.33639")
+            bot.send_message(message.chat.id, f"г.Фаниполь, ул.Мира, 1А\nМагазин Алеана\nЛокация https://goo.gl/maps/FBhbzVAv6ZRpVxpb6")
         elif text == "6666":
             kb_admin(message)
         elif text == "заказы по дате":
@@ -242,10 +243,10 @@ def send_text(message):
             kb_main(message)
 
 
-        elif text == "форд":
+        elif text == "фиат":
             server_2(text, message)
-        elif text == "мерседес":
-            server_2(text,message)
+        #elif text == "мерседес":
+            #server_2(text,message)
 
         elif text == "скания":
             server_2(text,message)
@@ -293,28 +294,18 @@ def callback_InLine(call):
     if call.message:
         text = call.data
         if text == "1":
-            bot.send_message(call.message.chat.id, "Форд Транзит АН5885-5 приедет к Вам")
+            bot.send_message(call.message.chat.id, "Фиат Дукато АХ4299-5 приедет к Вам")
             bot.edit_message_text("Продолжаем", call.message.chat.id, call.message.message_id, reply_markup=None)
             kb_inline_file(call.message)
 
             db = sqlite3.connect("aleana_server.db")
             sql = db.cursor()
-            sql.execute(f"UPDATE data SET car = 'форд' WHERE id_client = '{call.from_user.id}'")
+            sql.execute(f"UPDATE data SET car = 'фиат' WHERE id_client = '{call.from_user.id}'")
             db.commit()
 
 
 
         elif text == "2":
-            bot.send_message(call.message.chat.id, "Мерседес АВ4697-5 приедет к Вам")
-            bot.edit_message_text("Продолжаем", call.message.chat.id, call.message.message_id, reply_markup=None)
-            kb_inline_file(call.message)
-
-            db = sqlite3.connect("aleana_server.db")
-            sql = db.cursor()
-            sql.execute(f"UPDATE data SET car = 'мерседес' WHERE id_client = '{call.from_user.id}'")
-            db.commit()
-
-        elif text == "3":
             bot.send_message(call.message.chat.id, "Манипулятор Скания АТ2657-5 приедет к Вам")
             bot.edit_message_text("Продолжаем", call.message.chat.id, call.message.message_id, reply_markup=None)
             kb_inline_file(call.message)
@@ -323,6 +314,16 @@ def callback_InLine(call):
             sql = db.cursor()
             sql.execute(f"UPDATE data SET car = 'скания' WHERE id_client = '{call.from_user.id}'")
             db.commit()
+
+        #elif text == "3":
+            #bot.send_message(call.message.chat.id, "Манипулятор Скания АТ2657-5 приедет к Вам")
+            #bot.edit_message_text("Продолжаем", call.message.chat.id, call.message.message_id, reply_markup=None)
+            #kb_inline_file(call.message)
+
+            #db = sqlite3.connect("aleana_server.db")
+            #sql = db.cursor()
+            #sql.execute(f"UPDATE data SET car = 'скания' WHERE id_client = '{call.from_user.id}'")
+            #db.commit()
 
         elif text == "9":
             bot.send_message(call.message.chat.id, "9 - 10")
