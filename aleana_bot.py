@@ -161,7 +161,7 @@ def send_text(message):
             bot.send_message(message.chat.id, f"A1 - +375(44)760-88-90\nМТС - +375(33)380-88-90\nгород - 8(01716)9-05-05\nсайт - aleana.by\ne-mail - weldbi@mail.ru")
 
         elif text == "режим работы":
-            bot.send_message(message.chat.id, f"ПН-СУБ - 8.00-20.00\nВС - 9.00-18.00\nБез обеда")
+            bot.send_message(message.chat.id, f"ПН-СБ - 8.00-20.00\nВС - 9.00-18.00\nБез обеда")
 
 
 
